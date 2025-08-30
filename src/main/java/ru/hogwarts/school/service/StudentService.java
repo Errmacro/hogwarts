@@ -27,7 +27,7 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Student getStudentByID(long studentId) {
+    public Student getStudentByID(Long studentId) {
         return studentRepository.findById(studentId).orElse(null);
     }
 
@@ -38,7 +38,7 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Student deleteStudent(long studentId) {
+    public Student deleteStudent(Long studentId) {
         Student student = studentRepository.findById(studentId).orElse(null);
         if (student != null) {
             studentRepository.deleteById(studentId);
