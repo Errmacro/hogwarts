@@ -7,10 +7,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,5 +50,13 @@ public class StudentService {
         return studentRepository.findAll().stream()
                 .filter(student -> student.getAge() == age)
                 .collect(Collectors.toList());
+    }
+
+    public Student findByName(String name){
+        return studentRepository.findByNameContainsIgnoreCase(name);
+    }
+
+    public Collection<Student> findByAgeBetween (int min, int max){
+        return studentRepository.findByAgeBetween (min, max);
     }
 }

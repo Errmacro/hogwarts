@@ -46,12 +46,11 @@ public class FacultyService {
         return faculty;
     }
 
-    public List<Faculty> getFacultiesByColor(String color) {
-        if (color == null) {
-            return Collections.emptyList();
-        }
-        return facultyRepository.findAll().stream()
-                .filter(faculty -> color.equalsIgnoreCase(faculty.getColor()))
-                .collect(Collectors.toList());
+    public Faculty getFacultiesByColor(String color) {
+        return facultyRepository.findByColorContainsIgnoreCase(color);
+    }
+
+    public Faculty getFacultiesByName(String name) {
+        return facultyRepository.findByNameContainsIgnoreCase(name);
     }
 }

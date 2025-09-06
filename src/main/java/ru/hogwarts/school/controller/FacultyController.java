@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.StudentService;
 
@@ -50,11 +51,28 @@ public class FacultyController {
         facultyService.deleteFaculty(id);
     }
 
-    @GetMapping("/color/{color}")
-    public ResponseEntity<Collection<Faculty>> findFaculties(@RequestParam(required = false) String color) {
+    @GetMapping("/find")
+    public ResponseEntity<Faculty> findFaculties(@RequestParam(required = false) String color, @RequestParam(required = false) String name) {
         if (color != null && !color.isBlank()) {
             return ResponseEntity.ok(facultyService.getFacultiesByColor(color));
         }
-        return ResponseEntity.ok(Collections.emptyList());
+        if (name != null && !name.isBlank()) {
+            return ResponseEntity.ok(facultyService.getFacultiesByName(name));
+        }
+        return ResponseEntity.ok((Faculty) Collections.emptyList());
+    }
+
+    @GetMapping("{id}/students")
+    public ResponseEntity<Collection<Student>> getFacultyStudents(@PathVariable Long id) {
+        Faculty faculty = facultyService.getFacultyByID(id);
+        if (faculty == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Collection<Student> students = faculty.getStudents();
+        if (students == null || students.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(students);
     }
 }

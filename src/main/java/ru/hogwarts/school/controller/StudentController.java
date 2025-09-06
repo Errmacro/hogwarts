@@ -28,6 +28,14 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
+    @GetMapping("/byName")
+    public ResponseEntity findStudentByName(@RequestParam String name) {
+        if (name != null && !name.isBlank()) {
+            return ResponseEntity.ok(studentService.findByName(name));
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Student createStudent(@RequestBody Student student) {
@@ -48,11 +56,40 @@ public class StudentController {
     public void deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
     }
+
     @GetMapping
     public ResponseEntity<Collection<Student>> findStudents(@RequestParam(required = false) int age) {
         if (age > 0) {
             return ResponseEntity.ok(studentService.getStudentsByAge(age));
         }
         return ResponseEntity.ok(Collections.emptyList());
+    }
+
+    @GetMapping("/byAgeBetween")
+    public ResponseEntity findStudentByName(@RequestParam int min, @RequestParam int max) {
+        if (min < 0 || max < 0) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (min > max) {
+            return ResponseEntity.badRequest().build();
+        }
+        Collection<Student> students = studentService.findByAgeBetween(min, max);
+        if (students.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("/by-name/{name}/faculty")
+    public ResponseEntity<Faculty> getStudentFacultyByName(@PathVariable String name) {
+        Student student = studentService.findByName(name);
+        if (student == null) {
+            return ResponseEntity.notFound().build();
+        }
+        Faculty faculty = student.getFaculty();
+        if (faculty == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(faculty);
     }
 }

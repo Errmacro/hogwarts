@@ -1,18 +1,33 @@
 package ru.hogwarts.school.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
+@Table(name = "факультеты")
 public class Faculty {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "faculty_id")
+    private Long facultyId;
+
+    public Collection<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Collection<Student> students) {
+        this.students = students;
+    }
+
     private String name;
     private String color;
+
+@OneToMany(mappedBy = "faculty")
+@JsonIgnore
+    private Collection<Student> students;
 
     public Faculty(String name, String color) {
         this.name = name;
@@ -22,7 +37,7 @@ public class Faculty {
     public Faculty(){}
 
     public Long getId() {
-        return id;
+        return facultyId;
     }
 
     public String getName() {
@@ -34,7 +49,7 @@ public class Faculty {
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.facultyId = id;
     }
 
     public void setName(String name) {
@@ -49,11 +64,11 @@ public class Faculty {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Faculty faculty = (Faculty) o;
-        return id == faculty.id && Objects.equals(name, faculty.name) && Objects.equals(color, faculty.color);
+        return facultyId == faculty.facultyId && Objects.equals(name, faculty.name) && Objects.equals(color, faculty.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, color);
+        return Objects.hash(facultyId, name, color);
     }
 }
