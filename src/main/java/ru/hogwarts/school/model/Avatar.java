@@ -1,11 +1,14 @@
 package ru.hogwarts.school.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
+@Table(name = "аватарки")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Avatar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,17 +16,20 @@ public class Avatar {
     private String filePath;
     private long fileSize;
     private String mediaType;
+    @Lob
     private byte[] data;
 
     @OneToOne
     private Student student;
 
-    public Avatar(String filePath, long fileSize, String mediaType, byte[] data) {
+    public Avatar(Long id, String filePath, long fileSize, String mediaType, Student student) {
+        this.id = id;
         this.filePath = filePath;
         this.fileSize = fileSize;
         this.mediaType = mediaType;
-        this.data = data;
+        this.student = student;
     }
+
     public Avatar(){}
 
     public Long getId() {
