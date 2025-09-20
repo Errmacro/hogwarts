@@ -12,8 +12,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@RequestMapping("/faculty")
 @RestController
+@RequestMapping("/faculty")
 public class FacultyController {
     private final FacultyService facultyService;
 
@@ -31,9 +31,9 @@ public class FacultyController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Faculty createFaculty(@RequestBody Faculty faculty) {
-        return facultyService.createFaculty(faculty);
+    public ResponseEntity<Faculty> createFaculty(@RequestBody Faculty faculty) {
+        Faculty createdFaculty = facultyService.createFaculty(faculty);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdFaculty);
     }
 
     @PutMapping("/{id}")

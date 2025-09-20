@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService {
 
+    @Autowired
     private final StudentRepository studentRepository;
 
     @Autowired
