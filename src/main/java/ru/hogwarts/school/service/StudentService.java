@@ -30,9 +30,6 @@ public class StudentService {
     }
 
     public Student updateStudent(Student student) {
-        if (!studentRepository.existsById(student.getId())) {
-            return null;
-        }
         return studentRepository.save(student);
     }
 
