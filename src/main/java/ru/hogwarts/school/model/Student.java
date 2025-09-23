@@ -10,6 +10,7 @@ import java.util.Objects;
 @Table(name = "студенты")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Student {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
