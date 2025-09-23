@@ -93,4 +93,9 @@ public class StudentController {
         }
         return ResponseEntity.ok(faculty);
     }
+
+    @GetMapping("/count")
+    public Integer getTotalStudentCount() {
+        return studentService.getTotalCountOfStudents();
+    }
 }
