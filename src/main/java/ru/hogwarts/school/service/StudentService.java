@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService {
 
+    @Autowired
     private final StudentRepository studentRepository;
 
     @Autowired
@@ -29,9 +30,6 @@ public class StudentService {
     }
 
     public Student updateStudent(Student student) {
-        if (!studentRepository.existsById(student.getId())) {
-            return null;
-        }
         return studentRepository.save(student);
     }
 
