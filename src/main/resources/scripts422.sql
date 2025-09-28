@@ -7,7 +7,7 @@ CREATE TABLE Автомобили (
 
 CREATE TABLE Люди (
     id SERIAL PRIMARY KEY,
-    имя VARCHAR(100) NOT NULL,
+    имя VARCHAR(100) UNIQUE NOT NULL,
     возраст INTEGER NOT NULL CHECK (возраст >= 0),
     есть_права BOOLEAN NOT NULL DEFAULT FALSE,
     машина_id INTEGER REFERENCES Автомобили(id)
