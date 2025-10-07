@@ -23,7 +23,7 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    Logger logger = LoggerFactory.getLogger(StudentService.class);
+    private final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     public Student createStudent(Student student) {
         logger.info("Was invoked method for create student");

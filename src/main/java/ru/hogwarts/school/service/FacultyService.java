@@ -25,7 +25,7 @@ public class FacultyService {
         this.facultyRepository = facultyRepository;
     }
 
-    Logger logger = LoggerFactory.getLogger(FacultyService.class);
+    private final Logger logger = LoggerFactory.getLogger(FacultyService.class);
 
     public Faculty createFaculty(Faculty faculty) {
         logger.debug("Attempting to create new faculty: {}", faculty.getName());
