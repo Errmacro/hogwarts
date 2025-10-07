@@ -6,10 +6,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,4 +47,12 @@ public class FacultyService {
     public Faculty getFacultiesByName(String name) {
         return facultyRepository.findByNameContainsIgnoreCase(name);
     }
+
+    public Optional<String> findLongestFacultyName() {
+        Collection<Faculty> faculties = facultyRepository.findAll();
+        return faculties.stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length));
+    }
+
 }
