@@ -6,18 +6,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("/student")
 @RestController
 public class StudentController {
     private final StudentService studentService;
+    private final StudentRepository studentRepository;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, StudentRepository studentRepository) {
         this.studentService = studentService;
+        this.studentRepository = studentRepository;
     }
 
     @GetMapping("/{id}")
@@ -109,6 +114,26 @@ public class StudentController {
         return studentService.getLastFiveStudents();
     }
 
+    @GetMapping("/names-starting-with-Г")
+    public Collection<String> getNamesStartingWithG() {
+        Collection<Student> allStudents = studentRepository.findAll();
+        return allStudents.stream()
+                .map(Student::getName)
+                .filter(name -> name.toLowerCase().startsWith("г"))
+                .map(String::toUpperCase)
+                .sorted()
+                .collect(Collectors.toList());
+    }
 
-
+    @GetMapping("/average-age-streamed")
+    public Double getAverageAge() {
+        Collection<Student> students = studentRepository.findAll();
+        if (students.isEmpty()) {
+            return 0.0;
+        }
+        return students.stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0.0);
+    }
 }

@@ -11,6 +11,8 @@ import ru.hogwarts.school.service.StudentService;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/faculty")
@@ -74,5 +76,34 @@ public class FacultyController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("/longest-name")
+    public ResponseEntity<String> getLongestFacultyName() {
+        Optional<String> longestName = facultyService.findLongestFacultyName();
+        if (!longestName.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(longestName.get());
+    }
+
+    @GetMapping("/fast-sum")
+    public long fastSum() { // теперь возвращаем long
+        long startTime = System.currentTimeMillis();
+        long result = 1_000_000L * (1_000_000L + 1L) / 2L;
+        long endTime = System.currentTimeMillis();
+        System.out.println("Время выполнения быстрого алгоритма: " + (endTime - startTime) + " мс");
+        return result;
+    }
+
+    @GetMapping("/slow-sum")
+    public int slowSum() {
+        long startTime = System.currentTimeMillis();
+        int sum = Stream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .reduce(0, Integer::sum);
+        long endTime = System.currentTimeMillis();
+        System.out.println("Время выполнения медленного алгоритма: " + (endTime - startTime) + " мс");
+        return sum;
     }
 }
