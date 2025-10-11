@@ -88,7 +88,7 @@ public class FacultyController {
     }
 
     @GetMapping("/fast-sum")
-    public long fastSum() { // теперь возвращаем long
+    public long fastSum() {
         long startTime = System.currentTimeMillis();
         long result = 1_000_000L * (1_000_000L + 1L) / 2L;
         long endTime = System.currentTimeMillis();

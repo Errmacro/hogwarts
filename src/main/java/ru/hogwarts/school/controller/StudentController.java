@@ -116,24 +116,23 @@ public class StudentController {
 
     @GetMapping("/names-starting-with-Г")
     public Collection<String> getNamesStartingWithG() {
-        Collection<Student> allStudents = studentRepository.findAll();
-        return allStudents.stream()
-                .map(Student::getName)
-                .filter(name -> name.toLowerCase().startsWith("г"))
-                .map(String::toUpperCase)
-                .sorted()
-                .collect(Collectors.toList());
+       return studentService.getNamesStartingWithG();
     }
 
     @GetMapping("/average-age-streamed")
     public Double getAverageAge() {
-        Collection<Student> students = studentRepository.findAll();
-        if (students.isEmpty()) {
-            return 0.0;
-        }
-        return students.stream()
-                .mapToInt(Student::getAge)
-                .average()
-                .orElse(0.0);
+        return studentService.getAverageAge();
+    }
+
+    @GetMapping("/print-parallel")
+    public void printParallel() {
+        List<Student> students = studentRepository.findAll();
+        studentService.printParallel(students);
+    }
+
+    @GetMapping("/print-synchronized")
+    public void printSynchronized() {
+        List<Student> students = studentRepository.findAll();
+        studentService.printSynchronized(students);
     }
 }
